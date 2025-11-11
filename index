@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Casos de Éxito | Los Linnieiros</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <style>
+        /* Estilo base y fondo */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #121212;
+            background-image: linear-gradient(315deg, #121212 0%, #1a1a1a 74%);
+            color: #e0e0e0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            overflow: hidden; /* Evita scroll durante la bienvenida */
+        }
+
+        /* Contenedor de pantalla completa para bienvenida y contenido principal */
+        .fullscreen-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+            box-sizing: border-box;
+            transition: opacity 0.8s ease-out;
+        }
+
+        /* Estilos específicos para la bienvenida */
+        #welcome-container {
+            background-color: #121212;
+            z-index: 1000;
+        }
+
+        #welcome-container h1 {
+            font-size: 3rem;
+            font-weight: 600;
+            color: #FFF159;
+            text-shadow: 0 0 10px rgba(255, 241, 89, 0.6);
+            margin-bottom: 15px;
+        }
+
+        #welcome-container p {
+            font-size: 1.2rem;
+            font-weight: 300;
+            color: #b0b0b0;
+            max-width: 600px;
+            margin-bottom: 40px;
+            line-height: 1.6;
+        }
+
+        .meli-button {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            background-color: #FFF159;
+            color: #121212;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .meli-button:hover {
+            background-color: #fff58c;
+            box-shadow: 0 0 20px rgba(255, 241, 89, 0.4);
+            transform: translateY(-3px);
+        }
+
+        /* Clase para ocultar elementos inicialmente */
+        .initially-hidden {
+            display: none;
+            opacity: 0;
+            z-index: 500;
+            position: relative; /* Para que no sea fixed */
+            height: auto; /* Restaura altura automática */
+        }
+        
+        /* Contenedor del formulario (ya no es pantalla completa) */
+        .form-container {
+            width: 100%;
+            max-width: 600px;
+            background: rgba(30, 30, 30, 0.6);
+            padding: 40px;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        /* Resto de estilos del formulario y tabla (sin cambios) */
+        .header h1 { color: #FFF159; font-weight: 600; margin-bottom: 10px; text-shadow: 0 0 8px rgba(255, 241, 89, 0.5); }
+        .header p { font-weight: 300; font-size: 1rem; margin-bottom: 30px; color: #b0b0b0; }
+        .input-group { margin-bottom: 20px; text-align: left; }
+        input[type="text"], input[type="date"], textarea { width: 100%; padding: 15px; background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 241, 89, 0.4); border-radius: 8px; color: #e0e0e0; font-size: 1rem; font-family: 'Poppins', sans-serif; transition: all 0.3s ease; box-sizing: border-box; }
+        input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(1) brightness(0.8) sepia(1) hue-rotate(10deg) saturate(5); }
+        input::placeholder, textarea::placeholder { color: #888; }
+        input:focus, textarea:focus { outline: none; border-color: #FFF159; box-shadow: 0 0 15px rgba(255, 241, 89, 0.3); }
+        textarea { resize: vertical; }
+        .submit-btn { width: 100%; padding: 15px; border-radius: 8px; font-size: 1.1rem; font-weight: 600; background-color: #FFF159; color: #121212; border: none; cursor: pointer; transition: all 0.3s ease; }
+        .submit-btn:hover { background-color: #fff58c; box-shadow: 0 0 20px rgba(255, 241, 89, 0.4); transform: translateY(-2px); }
+        .feedback-message { margin-top: 20px; color: #4CAF50; font-weight: 600; min-height: 24px; }
+        .actions-section { margin-top: 30px; padding: 20px; background: rgba(255, 241, 89, 0.1); border-radius: 8px; border: 1px solid rgba(255, 241, 89, 0.3); }
+        .actions-section p { margin-top: 0; color: #FFF159; }
+        .action-btn { width: 100%; padding: 15px; margin-top: 10px; border: 1px solid #FFF159; border-radius: 8px; background-color: transparent; color: #FFF159; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease; }
+        .action-btn:hover { background-color: #FFF159; color: #121212; box-shadow: 0 0 20px rgba(255, 241, 89, 0.4); }
+        .table-view { width: 100%; max-width: 900px; background: rgba(40, 40, 40, 0.7); padding: 30px; border-radius: 15px; border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); text-align: center; position: relative; transition: opacity 0.8s ease-in; }
+        .table-view h2 { color: #FFF159; text-shadow: 0 0 8px rgba(255, 241, 89, 0.5); }
+        .table-wrapper { max-height: 50vh; overflow-y: auto; border: 1px solid rgba(255, 241, 89, 0.3); border-radius: 8px; }
+        #casesTable { width: 100%; border-collapse: collapse; color: #e0e0e0; }
+        #casesTable th, #casesTable td { padding: 12px 15px; text-align: left; border-bottom: 1px solid rgba(255, 241, 89, 0.2); }
+        #casesTable th { background-color: rgba(255, 241, 89, 0.1); color: #FFF159; font-weight: 600; }
+        .close-btn { position: absolute; top: 15px; right: 15px; background: transparent; border: 2px solid #aaa; color: #aaa; border-radius: 50%; width: 30px; height: 30px; font-size: 1.2rem; line-height: 26px; cursor: pointer; transition: all 0.3s ease; }
+        .close-btn:hover { color: #FFF159; border-color: #FFF159; transform: rotate(90deg); }
+    </style>
+</head>
+<body>
+
+    <!-- Pantalla de Bienvenida -->
+    <div id="welcome-container" class="fullscreen-container">
+        <h1>Bienvenido, Linnieiro</h1>
+        <p>Demostremos que somos los mejores. Carga tus mejores casos de Level Up y sigamos rompiéndola.</p>
+        <button id="continueBtn" class="meli-button">Compartir mi mejor caso</button>
+    </div>
+
+    <!-- Contenido Principal (Formulario y Tabla), inicialmente oculto -->
+    <div id="main-content-container" class="initially-hidden">
+        <div id="mainFormContainer" class="form-container">
+            <div class="header">
+                <h1>Reporte de Casos de Éxito</h1>
+                <p>¡Tu aporte es clave para el equipo!</p>
+            </div>
+            <form id="casoForm">
+                <div class="input-group"><input type="text" id="ldap" required placeholder="Tu nombre/LDAP"></div>
+                <div class="input-group"><input type="text" id="numeroCaso" required placeholder="Número de caso"></div>
+                <div class="input-group"><input type="date" id="fechaCaso" required></div>
+                <div class="input-group"><textarea id="descripcion" rows="5" required placeholder="Breve descripción estilo Meli"></textarea></div>
+                <button type="submit" class="submit-btn">Agregar Mi Caso</button>
+            </form>
+            <div id="feedback" class="feedback-message"></div>
+            <div class="actions-section" id="actionsSection" style="display: none;">
+                <p>¡Acciones disponibles!</p>
+                <button id="viewCasesBtn" class="action-btn">Ver Casos Cargados</button>
+                <button id="downloadBtn" class="action-btn">Descargar Casos en CSV</button>
+            </div>
+        </div>
+        <div id="tableViewContainer" class="table-view initially-hidden">
+            <button id="closeTableBtn" class="close-btn">&times;</button>
+            <h2>Casos Registrados</h2>
+            <div class="table-wrapper">
+                <table id="casesTable"><thead... ></thead><tbody id="casesTableBody"></tbody></table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- LÓGICA DE LA PANTALLA DE BIENVENIDA ---
+            const welcomeContainer = document.getElementById('welcome-container');
+            const continueBtn = document.getElementById('continueBtn');
+            const mainContentContainer = document.getElementById('main-content-container');
+
+            continueBtn.addEventListener('click', () => {
+                // 1. Desvanecer la pantalla de bienvenida
+                welcomeContainer.style.opacity = '0';
+
+                // 2. Después de la animación, ocultarla y mostrar el contenido principal
+                setTimeout(() => {
+                    welcomeContainer.style.display = 'none';
+                    document.body.style.overflow = 'auto'; // Permitir scroll si es necesario
+
+                    // Mostrar el contenedor principal
+                    mainContentContainer.style.display = 'flex'; // Usamos flex para centrar el contenido
+                    
+                    // 3. Desvanecer para mostrar el contenido principal (pequeño delay para asegurar la transición)
+                    setTimeout(() => {
+                        mainContentContainer.style.opacity = '1';
+                    }, 50);
+
+                }, 800); // Debe coincidir con la duración de la transición en CSS
+            });
+
+
+            // --- LÓGICA DEL FORMULARIO Y TABLA (SIN CAMBIOS) ---
+            const form = document.getElementById('casoForm');
+            const feedbackMessage = document.getElementById('feedback');
+            // ... (el resto del código del formulario es idéntico)
+            const actionsSection = document.getElementById('actionsSection');
+            const downloadBtn = document.getElementById('downloadBtn');
+            const viewCasesBtn = document.getElementById('viewCasesBtn');
+            const mainFormContainer = document.getElementById('mainFormContainer');
+            const tableViewContainer = document.getElementById('tableViewContainer');
+            const closeTableBtn = document.getElementById('closeTableBtn');
+            const casesTableBody = document.getElementById('casesTableBody');
+
+            let casosGuardados = [];
+
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const caso = {
+                    ldap: document.getElementById('ldap').value,
+                    numeroCaso: document.getElementById('numeroCaso').value,
+                    fechaCaso: document.getElementById('fechaCaso').value,
+                    descripcion: document.getElementById('descripcion').value
+                };
+                casosGuardados.push(caso);
+                feedbackMessage.textContent = '¡Caso agregado con éxito!';
+                setTimeout(() => { feedbackMessage.textContent = ''; }, 4000);
+                form.reset();
+                if (casosGuardados.length > 0) { actionsSection.style.display = 'block'; }
+            });
+            
+            viewCasesBtn.addEventListener('click', () => {
+                renderTable();
+                mainFormContainer.style.display = 'none';
+                tableViewContainer.style.display = 'block';
+                setTimeout(() => { tableViewContainer.style.opacity = '1'; }, 50);
+            });
+            
+            closeTableBtn.addEventListener('click', () => {
+                tableViewContainer.style.opacity = '0';
+                setTimeout(() => {
+                    tableViewContainer.style.display = 'none';
+                    mainFormContainer.style.display = 'block';
+                }, 500);
+            });
+
+            function renderTable() {
+                casesTableBody.innerHTML = '';
+                if (casosGuardados.length === 0) {
+                    casesTableBody.innerHTML = `<tr><td colspan="4" style="text-align:center;">Aún no hay casos para mostrar.</td></tr>`;
+                    return;
+                }
+                const tableHeader = tableViewContainer.querySelector('thead');
+                tableHeader.innerHTML = `<tr><th>Nombre/LDAP</th><th>Nº Caso</th><th>Fecha</th><th>Descripción</th></tr>`;
+                casosGuardados.forEach(caso => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `<td>${caso.ldap}</td><td>${caso.numeroCaso}</td><td>${caso.fechaCaso}</td><td>${caso.descripcion}</td>`;
+                    casesTableBody.appendChild(row);
+                });
+            }
+
+            downloadBtn.addEventListener('click', () => {
+                if (casosGuardados.length === 0) { alert('Aún no se han agregado casos.'); return; }
+                downloadCSV(convertToCSV(casosGuardados));
+            });
+
+            function convertToCSV(data) {
+                const headers = ['Nombre_LDAP', 'Numero_de_Caso', 'Fecha_del_Caso', 'Descripcion'];
+                const rows = data.map(c => `"${c.ldap}","${c.numeroCaso}","${c.fechaCaso}","${c.descripcion.replace(/"/g, '""').replace(/(\\r\\n|\\n|\\r)/gm, " ")}"` );
+                return [headers.join(','), ...rows].join('\\n');
+            }
+
+            function downloadCSV(csvContent) {
+                const blob = new Blob(['\uFEFF' + csvContent], { type: 'text/csv;charset=utf-8;' });
+                const link = document.createElement('a');
+                link.setAttribute('href', URL.createObjectURL(blob));
+                link.setAttribute('download', 'casos_de_exito_linnieiros.csv');
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+        });
+    </script>
+</body>
+</html>
